@@ -23,7 +23,7 @@ In order to use iDEAL you will need to get an iDEAL merchant account from your b
   * SNS Bank: "Not yet available":http://www.snsbank.nl/zakelijk/betalingsverkeer/kan-ik-ideal-gebruiken-voor-mijn-webwinkel.html
 
 
-If you're switching from v2 to v3, see upgrading below
+If you're switching from iDEAL v2 to v3, see upgrading below
 
 
 h2. Install
@@ -50,10 +50,12 @@ Messages between you and the acquirer are all signed in order to prove their aut
 To create a self-signed certificate follow these steps:
 
 h3. ING
+
 <pre><code>/usr/bin/openssl genrsa -aes128 -out private_key.pem -passout pass:the_passphrase 2048
 /usr/bin/openssl req -x509 -sha256 -new -key private_key.pem -passin pass:the_passphrase -days 1825 -out private_certificate.cer</code></pre>
 
 h3. Other
+
 <pre><code>/usr/bin/openssl genrsa -des3 -out private_key.pem -passout pass:the_passphrase 1024
 /usr/bin/openssl req -x509 -new -key private_key.pem -passin pass:the_passphrase -days 3650 -out private_certificate.cer</code></pre>
 
