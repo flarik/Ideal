@@ -193,7 +193,7 @@ end
 class PaymentsController < ActionController::Base
   def create
     payment = Payment.create(params[:payment].merge(
-      :price_in_cents => 1000,                  # €10.00 in cents
+      :price_in_euro => 1000,                   # €10.00 formatted as: sprintf("%.2f", price)
       :return_url => payment_url(payment),      # This is where the customer will be returned to
       :description => 'A Dutch windmill'        # This will end up on the customer's bank statement (max 32 ASCII chars)
     ))
