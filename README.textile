@@ -22,6 +22,10 @@ In order to use iDEAL you will need to get an iDEAL merchant account from your b
   * Rabobank: Rabo iDEAL Professional. (Unverified)
   * SNS Bank: "Not yet available":http://www.snsbank.nl/zakelijk/betalingsverkeer/kan-ik-ideal-gebruiken-voor-mijn-webwinkel.html
 
+
+If you're switching from v2 to v3, see upgrading below
+
+
 h2. Install
 
 The iDEAL gem does not have any large external dependencies. It depends on Nap (a small HTTP library) and Builder (for building XML files). Because of these minor dependencies it's suited to use in Ruby projects other than Ruby on Rails.
@@ -45,8 +49,14 @@ Messages between you and the acquirer are all signed in order to prove their aut
 
 To create a self-signed certificate follow these steps:
 
-* /usr/bin/openssl genrsa -des3 -out private_key.pem -passout pass:the_passphrase 1024
-* /usr/bin/openssl req -x509 -new -key private_key.pem -passin pass:the_passphrase -days 3650 -out private_certificate.cer
+h3. ING
+<pre><code>/usr/bin/openssl genrsa -aes128 -out private_key.pem -passout pass:the_passphrase 2048
+/usr/bin/openssl req -x509 -sha256 -new -key private_key.pem -passin pass:the_passphrase -days 1825 -out private_certificate.cer</code></pre>
+
+h3. Other
+<pre><code>/usr/bin/openssl genrsa -des3 -out private_key.pem -passout pass:the_passphrase 1024
+/usr/bin/openssl req -x509 -new -key private_key.pem -passin pass:the_passphrase -days 3650 -out private_certificate.cer</code></pre>
+
 
 Substitute _the_passphrase_ with your own passphrase. You will need to configure that passphrase later on, so hand on to it.
 
@@ -193,15 +203,15 @@ end
 class PaymentsController < ActionController::Base
   def create
     payment = Payment.create(params[:payment].merge(
-      :price_in_euro => 1000,                   # €10.00 formatted as: sprintf("%.2f", price)
-      :return_url => payment_url(payment),      # This is where the customer will be returned to
-      :description => 'A Dutch windmill'        # This will end up on the customer's bank statement (max 32 ASCII chars)
+      :price_in_euro => "10.00",                   # €10.00 formatted as: sprintf("%.2f", price)
+      :return_url    => payment_url(payment),      # This is where the customer will be returned to
+      :description   => 'A Dutch windmill'         # This will end up on the customer's bank statement (max 32 ASCII chars)
     ))
     
     response = ideal.setup_purchase(payment.price_in_cents, payment.ideal_attributes)
     if response.success?
       payment.transaction_id = response.transaction_id
-      payment.status = 'pending'
+      payment.status         = 'pending'
       payment.save(false)
     else
       Rails.logger.info("Payment initialization failed: [#{response.error_message}] #{response.error_details}")
@@ -226,6 +236,16 @@ class PaymentsController < ActionController::Base
   end
 end
 </code></pre>
+
+h2. Upgrading
+
+h3. ING iDEAL v2 -> v3
+
+  * Get the new certificate from the iDEAL dashboard
+  * Generate your own new certificates
+  * change the issuer_id field to text/varchar, this field contains the BIC codes now
+  * Make sure the amount is in euro like 10.00 and not in cents!
+
 
 h2. Help out!
 
