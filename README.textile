@@ -98,15 +98,22 @@ If you see test errors, you're on your own (; You can run the test in debug mode
 
 h2. Dashboards
 
+h3. ABN AMRO
+
+* "Test dashboard":https://abnamro-test.ideal-payment.de/ideal/signupInitiatePreAction.do
+* "Live dashboard":https://abnamro.ideal-payment.de/ideal/signupInitiatePreAction.do
+
 h3. ING
  
 * "Test dashboard":https://idealtest.secure-ing.com/ideal/logon_ing.do
 * "Live dashboard":https://ideal.secure-ing.com/ideal/logon_ing.do
 
-h3. ABN AMRO
+h3. Rabobank
+ 
+* "Test dashboard":https://idealtest.rabobank.nl
+* "Live dashboard":https://ideal.rabobank.nl
 
-* "Test dashboard":https://abnamro-test.ideal-payment.de/ideal/signupInitiatePreAction.do
-* "Live dashboard":https://abnamro.ideal-payment.de/ideal/signupInitiatePreAction.do
+
 
 h3. Compatibility
 
