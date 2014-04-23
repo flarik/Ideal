@@ -356,7 +356,7 @@ module Ideal
           end
           xml.Merchant do |xml|
             xml.merchantID self.class.merchant_id
-            xml.subID 0
+            xml.subID @sub_id
             xml.merchantReturnURL options[:return_url]
           end
           xml.Transaction do |xml|
